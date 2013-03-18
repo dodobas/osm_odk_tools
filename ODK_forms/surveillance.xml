@@ -3,7 +3,7 @@
     <h:title>Surveillance</h:title>
     <model>
       <instance>
-        <data id="surveillance_18032013_1">
+        <data id="surveillance_18032013_2">
           <author/>
           <photo/>
           <location/>
@@ -16,7 +16,60 @@
         </data>
       </instance>
       <itext>
-        <translation lang="eng">
+        <translation lang="Hrvatski">
+          <text id="/data/author:label">
+            <value>Autor</value>
+          </text>
+          <text id="/data/author:hint">
+            <value>Vaše OSM korisničko ime, ili neka druga identifikacija, potrebno je unesti samo ako je ovo prvi put da koristite ovaj uređaj za prikupljanje podataka.</value>
+          </text>
+          <text id="/data/photo:label">
+            <value>Snimi i obilježi fotografiju</value>
+          </text>
+          <text id="/data/photo:hint">
+            <value>Nakon snimanja na fotografiji možete obilježiti zanimljiva područja.</value>
+          </text>
+          <text id="/data/location:label">
+            <value>Spremi lokaciju</value>
+          </text>
+          <text id="/data/location:hint">
+            <value/>
+          </text>
+          <text id="/data/operator:label">
+            <value>Operator</value>
+          </text>
+          <text id="/data/operator:hint">
+            <value>Koja organizacija upravlja ovom kamerom</value>
+          </text>
+          <text id="/data/ref:label">
+            <value>Broj kamere</value>
+          </text>
+          <text id="/data/ref:hint">
+            <value>Referentni broj kamere (primjer XXX-000). Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/surveillance_type:label">
+            <value>Vrsta nadzorne kamere</value>
+          </text>
+          <text id="/data/surveillance_type:hint">
+            <value/>
+          </text>
+          <text id="/data/surveillance_type:option0">
+            <value>Unutrašnja</value>
+          </text>
+          <text id="/data/surveillance_type:option1">
+            <value>Vanjska</value>
+          </text>
+          <text id="/data/surveillance_type:option2">
+            <value>Javno područje</value>
+          </text>
+          <text id="/data/comment:label">
+            <value>Komentar</value>
+          </text>
+          <text id="/data/comment:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+        </translation>
+        <translation lang="English">
           <text id="/data/author:label">
             <value>Author</value>
           </text>

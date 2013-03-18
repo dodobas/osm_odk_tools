@@ -3,7 +3,7 @@
     <h:title>Surveillance</h:title>
     <model>
       <instance>
-        <data id="surveillance_18032013_2">
+        <data id="surveillance_18032013_3">
           <author/>
           <photo/>
           <location/>
@@ -13,6 +13,7 @@
           <comment/>
           <observation_timestamp/>
           <device_id/>
+          <observation_uuid/>
         </data>
       </instance>
       <itext>
@@ -132,6 +133,7 @@
       <bind nodeset="/data/comment" type="string"/>
       <bind nodeset="/data/observation_timestamp" type="timestamp" jr:preload="timestamp" jr:preloadParams="start"/>
       <bind nodeset="/data/device_id" type="string" jr:preload="property" jr:preloadParams="uri:deviceid"/>
+      <bind nodeset="/data/observation_uuid" type="string" readonly="true()" calculate="concat('uuid:',uuid())" />
     </model>
   </h:head>
   <h:body>

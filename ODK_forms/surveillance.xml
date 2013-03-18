@@ -1,0 +1,125 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Surveillance</h:title>
+    <model>
+      <instance>
+        <data id="surveillance_18032013_1">
+          <author/>
+          <photo/>
+          <location/>
+          <operator/>
+          <ref/>
+          <surveillance_type/>
+          <comment/>
+          <observation_timestamp/>
+          <device_id/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/author:label">
+            <value>Author</value>
+          </text>
+          <text id="/data/author:hint">
+            <value>Your OSM username, or any other identification, you should enter this only if this is your first time using this phone to collect data.</value>
+          </text>
+          <text id="/data/photo:label">
+            <value>Capture and annotate photo</value>
+          </text>
+          <text id="/data/photo:hint">
+            <value>After photo capture you can add markings and highlight interesting areas.</value>
+          </text>
+          <text id="/data/location:label">
+            <value>Record location</value>
+          </text>
+          <text id="/data/location:hint">
+            <value/>
+          </text>
+          <text id="/data/operator:label">
+            <value>Operator</value>
+          </text>
+          <text id="/data/operator:hint">
+            <value>Which organization is operating the camera</value>
+          </text>
+          <text id="/data/ref:label">
+            <value>Camera reference</value>
+          </text>
+          <text id="/data/ref:hint">
+            <value>Camera reference number (example XXX-000). This field is optional.</value>
+          </text>
+          <text id="/data/surveillance_type:label">
+            <value>Type of surveillance</value>
+          </text>
+          <text id="/data/surveillance_type:hint">
+            <value/>
+          </text>
+          <text id="/data/surveillance_type:option0">
+            <value>Indoor</value>
+          </text>
+          <text id="/data/surveillance_type:option1">
+            <value>Outdoor</value>
+          </text>
+          <text id="/data/surveillance_type:option2">
+            <value>Public</value>
+          </text>
+          <text id="/data/comment:label">
+            <value>Comment</value>
+          </text>
+          <text id="/data/comment:hint">
+            <value>This field is optional.</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/author" type="string"/>
+      <bind nodeset="/data/photo" type="binary" required="true()"/>
+      <bind nodeset="/data/location" type="geopoint" required="true()"/>
+      <bind nodeset="/data/operator" type="string" required="true()"/>
+      <bind nodeset="/data/ref" type="string"/>
+      <bind nodeset="/data/surveillance_type" type="select1" required="true()"/>
+      <bind nodeset="/data/comment" type="string"/>
+      <bind nodeset="/data/observation_timestamp" type="timestamp" jr:preload="timestamp" jr:preloadParams="start"/>
+      <bind nodeset="/data/device_id" type="string" jr:preload="property" jr:preloadParams="uri:deviceid"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/author">
+      <label ref="jr:itext('/data/author:label')"/>
+      <hint ref="jr:itext('/data/author:hint')"/>
+    </input>
+    <upload ref="/data/photo" appearance="annotate" mediatype="image/*">
+      <label ref="jr:itext('/data/photo:label')"/>
+      <hint ref="jr:itext('/data/photo:hint')"/>
+    </upload>
+    <input ref="/data/location">
+      <label ref="jr:itext('/data/location:label')"/>
+      <hint ref="jr:itext('/data/location:hint')"/>
+    </input>
+    <input ref="/data/operator">
+      <label ref="jr:itext('/data/operator:label')"/>
+      <hint ref="jr:itext('/data/operator:hint')"/>
+    </input>
+    <input ref="/data/ref">
+      <label ref="jr:itext('/data/ref:label')"/>
+      <hint ref="jr:itext('/data/ref:hint')"/>
+    </input>
+    <select1 ref="/data/surveillance_type">
+      <label ref="jr:itext('/data/surveillance_type:label')"/>
+      <item>
+        <label ref="jr:itext('/data/surveillance_type:option0')"/>
+        <value>indoor</value>
+      </item>
+      <item>
+        <label ref="jr:itext('/data/surveillance_type:option1')"/>
+        <value>outdoor</value>
+      </item>
+      <item>
+        <label ref="jr:itext('/data/surveillance_type:option2')"/>
+        <value>public</value>
+      </item>
+    </select1>
+    <input ref="/data/comment">
+      <label ref="jr:itext('/data/comment:label')"/>
+      <hint ref="jr:itext('/data/comment:hint')"/>
+    </input>
+  </h:body>
+</h:html>

@@ -1,0 +1,223 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Addresses</h:title>
+    <model>
+      <instance>
+        <data id="addresses_19032013_1">
+          <author/>
+          <photo/>
+          <location/>
+          <housenumber/>
+          <extra_detail/>
+          <housename/>
+          <street/>
+          <postcode/>
+          <city/>
+          <country/>
+          <comment/>
+          <observation_timestamp/>
+          <device_id/>
+          <observation_uuid/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="Hrvatski">
+          <text id="/data/author:label">
+            <value>Autor</value>
+          </text>
+          <text id="/data/author:hint">
+            <value>Vaše OSM korisničko ime, ili neka druga identifikacija, potrebno je unesti samo ako je ovo prvi put da koristite ovaj uređaj za prikupljanje podataka. Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/photo:label">
+            <value>Snimi i obilježi fotografiju</value>
+          </text>
+          <text id="/data/photo:hint">
+            <value>Nakon snimanja na fotografiji možete obilježiti zanimljiva područja. Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/location:label">
+            <value>Spremi lokaciju</value>
+          </text>
+          <text id="/data/location:hint">
+            <value/>
+          </text>
+          <text id="/data/housenumber:label">
+            <value>Kućni broj</value>
+          </text>
+          <text id="/data/housenumber:hint">
+            <value/>
+          </text>
+          <text id="/data/extra_detail:label">
+            <value>Želite li unesti informacije poput ulice, poštanskog broja, ...</value>
+          </text>
+          <text id="/data/extra_detail:hint">
+            <value>Ovakve informacije se mogu automatski odrediti korištenjem prostornih upita, stoga ih nije nužno unositi</value>
+          </text>
+          <text id="/data/housename:label">
+            <value>Naziv kuće</value>
+          </text>
+          <text id="/data/housename:hint">
+            <value>Npr. rodna kuća Nikole Tesle. Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/street:label">
+            <value>Naziv ulice</value>
+          </text>
+          <text id="/data/street:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/postcode:label">
+            <value>Poštanski broj</value>
+          </text>
+          <text id="/data/postcode:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/city:label">
+            <value>Naziv grada</value>
+          </text>
+          <text id="/data/city:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/country:label">
+            <value>Naziv zemlje</value>
+          </text>
+          <text id="/data/country:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+          <text id="/data/comment:label">
+            <value>Komentar</value>
+          </text>
+          <text id="/data/comment:hint">
+            <value>Ovo polje nije obavezno.</value>
+          </text>
+        </translation>
+        <translation lang="English">
+          <text id="/data/author:label">
+            <value>Author</value>
+          </text>
+          <text id="/data/author:hint">
+            <value>Your OSM username, or any other identification, you should enter this only if this is your first time using this phone to collect data. This field is optional.</value>
+          </text>
+          <text id="/data/photo:label">
+            <value>Capture and annotate photo</value>
+          </text>
+          <text id="/data/photo:hint">
+            <value>After photo capture you can add markings and highlight interesting areas. This field is optional.</value>
+          </text>
+          <text id="/data/location:label">
+            <value>Record location</value>
+          </text>
+          <text id="/data/location:hint">
+            <value/>
+          </text>
+          <text id="/data/housenumber:label">
+            <value>House number</value>
+          </text>
+          <text id="/data/housenumber:hint">
+            <value/>
+          </text>
+          <text id="/data/extra_detail:label">
+            <value>Do you want to collect information like street name, postcode, ...</value>
+          </text>
+          <text id="/data/extra_detail:hint">
+            <value>This kind of information can be automatically determined by spatial database queries, so they are not required</value>
+          </text>
+          <text id="/data/housename:label">
+            <value>House name</value>
+          </text>
+          <text id="/data/housename:hint">
+            <value>I.e. birth place of Nikola Tesla. This field is optional.</value>
+          </text>
+          <text id="/data/street:label">
+            <value>Street name</value>
+          </text>
+          <text id="/data/street:hint">
+            <value>This field is optional.</value>
+          </text>
+          <text id="/data/postcode:label">
+            <value>Postcode</value>
+          </text>
+          <text id="/data/postcode:hint">
+            <value>This field is optional.</value>
+          </text>
+          <text id="/data/city:label">
+            <value>City</value>
+          </text>
+          <text id="/data/city:hint">
+            <value>This field is optional.</value>
+          </text>
+          <text id="/data/country:label">
+            <value>Country</value>
+          </text>
+          <text id="/data/country:hint">
+            <value>This field is optional.</value>
+          </text>
+          <text id="/data/comment:label">
+            <value>Comment</value>
+          </text>
+          <text id="/data/comment:hint">
+            <value>This field is optional.</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/author" type="string"/>
+      <bind nodeset="/data/photo" type="binary"/>
+      <bind nodeset="/data/location" type="geopoint" required="true()"/>
+      <bind nodeset="/data/housenumber" type="string" required="true()"/>
+      <bind nodeset="/data/extra_detail" type="boolean"/>
+      <bind nodeset="/data/housename" type="string" relevant="boolean(/data/extra_detail)"/>
+      <bind nodeset="/data/street" type="string" relevant="boolean(/data/extra_detail)"/>
+      <bind nodeset="/data/postcode" type="string" relevant="boolean(/data/extra_detail)"/>
+      <bind nodeset="/data/city" type="string" relevant="boolean(/data/extra_detail)"/>
+      <bind nodeset="/data/country" type="string" relevant="boolean(/data/extra_detail)"/>
+      <bind nodeset="/data/comment" type="string"/>
+      <bind nodeset="/data/observation_timestamp" type="timestamp" jr:preload="timestamp" jr:preloadParams="start"/>
+      <bind nodeset="/data/device_id" type="string" jr:preload="property" jr:preloadParams="uri:deviceid"/>
+      <bind nodeset="/data/observation_uuid" type="string" readonly="true()" calculate="concat('uuid:',uuid())" />
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/author">
+      <label ref="jr:itext('/data/author:label')"/>
+      <hint ref="jr:itext('/data/author:hint')"/>
+    </input>
+    <upload ref="/data/photo" appearance="annotate" mediatype="image/*">
+      <label ref="jr:itext('/data/photo:label')"/>
+      <hint ref="jr:itext('/data/photo:hint')"/>
+    </upload>
+    <input ref="/data/location">
+      <label ref="jr:itext('/data/location:label')"/>
+      <hint ref="jr:itext('/data/location:hint')"/>
+    </input>
+    <input ref="/data/housenumber">
+      <label ref="jr:itext('/data/housenumber:label')"/>
+      <hint ref="jr:itext('/data/housenumber:hint')"/>
+    </input>
+    <trigger ref="/data/extra_detail">
+      <label ref="jr:itext('/data/extra_detail:label')"/>
+      <hint ref="jr:itext('/data/extra_detail:hint')"/>
+    </trigger>
+    <input ref="/data/housename">
+      <label ref="jr:itext('/data/housename:label')"/>
+      <hint ref="jr:itext('/data/housename:hint')"/>
+    </input>
+    <input ref="/data/street">
+      <label ref="jr:itext('/data/street:label')"/>
+      <hint ref="jr:itext('/data/street:hint')"/>
+    </input>
+    <input ref="/data/postcode">
+      <label ref="jr:itext('/data/postcode:label')"/>
+      <hint ref="jr:itext('/data/postcode:hint')"/>
+    </input>
+    <input ref="/data/city">
+      <label ref="jr:itext('/data/city:label')"/>
+      <hint ref="jr:itext('/data/city:hint')"/>
+    </input>
+    <input ref="/data/country">
+      <label ref="jr:itext('/data/country:label')"/>
+      <hint ref="jr:itext('/data/country:hint')"/>
+    </input>
+    <input ref="/data/comment">
+      <label ref="jr:itext('/data/comment:label')"/>
+      <hint ref="jr:itext('/data/comment:hint')"/>
+    </input>
+  </h:body>
+</h:html>

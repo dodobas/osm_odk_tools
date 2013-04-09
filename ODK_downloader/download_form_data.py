@@ -4,9 +4,54 @@ import xml.etree.ElementTree as ET
 import requests
 import csv
 import os
-
+import itertools
+import cStringIO
+import codecs
 import logging
 logger = logging.getLogger(__name__)
+
+
+class UnicodeDictWriter:
+    def __init__(self, f, fieldnames, restval="", extrasaction="raise",
+                 dialect="excel", *args, **kwds):
+        self.fieldnames = fieldnames    # list of keys for the dict
+        self.restval = restval          # for writing short dicts
+        if extrasaction.lower() not in ("raise", "ignore"):
+            raise ValueError(
+                "extrasaction (%s) must be 'raise' or 'ignore'" %
+                extrasaction)
+        self.extrasaction = extrasaction
+        self.writer = csv.writer(f, dialect, *args, **kwds)
+
+    def writeheader(self):
+        header = dict(zip(self.fieldnames, self.fieldnames))
+        self.writerow(header)
+
+    def _dict_to_list(self, rowdict):
+        if self.extrasaction == "raise":
+            wrong_fields = [k for k in rowdict if k not in self.fieldnames]
+            if wrong_fields:
+                raise ValueError("dict contains fields not in fieldnames: " +
+                                 ", ".join(wrong_fields))
+        return [
+            rowdict.get(key, self.restval).encode("utf-8")
+            for key in self.fieldnames]
+
+    def writerow(self, rowdict):
+        return self.writer.writerow(self._dict_to_list(rowdict))
+
+    def writerows(self, rowdicts):
+        rows = []
+        for rowdict in rowdicts:
+            rows.append(self._dict_to_list(rowdict))
+        return self.writer.writerows(rows)
+
+
+def union(*dicts):
+    """
+    Create a union of many dictionaries
+    """
+    return dict(itertools.chain(*map(lambda dct: list(dct.items()), dicts)))
 
 
 class ODKAggregateExport(object):
@@ -43,6 +88,8 @@ class ODKAggregateExport(object):
 
             if root.tag == 'forms':
                 self.formlist = list(root)
+                logger.info('Server form list: %s', [
+                    form.text for form in self.formlist])
             else:
                 self.formlist = None
         else:
@@ -91,6 +138,24 @@ class ODKAggregateExport(object):
         else:
             self.submissionIDs = None
 
+    def parse_data(self, elem):
+        myElem = list(elem)
+        if len(myElem) > 1:
+            return {myElem[0].tag.split('}')[1]: '*$*'.join([
+                '*|*'.join(
+                    ['||'.join(
+                        [innerElem.tag.split('}')[1], innerElem.text or ''])
+                        for innerElem in groupElem.getchildren()])
+                for groupElem in myElem])}
+        else:
+            if len(myElem[0].getchildren()) > 0:
+                return {myElem[0].tag.split('}')[1]: '*|*'.join(
+                    ['||'.join(
+                        [innerElem.tag.split('}')[1], innerElem.text or ''])
+                        for innerElem in myElem[0].getchildren()])}
+            else:
+                return {myElem[0].tag.split('}')[1]: myElem[0].text or u''}
+
     def get_submissions(self):
         myURL = urljoin(self.ODK_AGGSERVER, 'view/downloadSubmission')
         for submission in self.submissionIDs:
@@ -101,11 +166,12 @@ class ODKAggregateExport(object):
             root = ET.fromstring(r.content)
             myNamespace = '{http://opendatakit.org/submissions}'
             myDataElem = root.find('.//{0}data[@id]'.format(myNamespace))
+            myData = itertools.groupby(
+                myDataElem.getchildren(), key=lambda x: x.tag.split('}')[1])
             # process form data
-            myFormData = {
-                elem.tag.split('}')[1]: elem.text
-                for elem in myDataElem.getchildren()
-            }
+            myFormData = union(*[
+                self.parse_data(elem) for _, elem in myData
+            ])
             # process form media
             myMediaNodes = root.findall('.//{0}mediaFile'.format(myNamespace))
             myFormMedia = [
@@ -128,10 +194,12 @@ class ODKAggregateExport(object):
 
         myFilename = 'data.csv'
         myPath = os.path.join(myDirectory, myFilename)
-        with open(myPath, 'w') as csvfile:
-            myWriter = csv.DictWriter(csvfile, fieldnames=self.formattrs)
+        with open(myPath, 'wb') as csvfile:
+            myWriter = UnicodeDictWriter(csvfile, fieldnames=self.formattrs)
             myWriter.writeheader()
+            #import pdb; pdb.set_trace()
             myWriter.writerows((subm[0] for subm in self.submissions))
+
         logger.debug('Wrote submissions data as csv!')
 
         myMediaDirectory = os.path.join(myDirectory, 'media')
@@ -139,10 +207,11 @@ class ODKAggregateExport(object):
         if not(os.path.exists(myMediaDirectory)):
             try:
                 os.makedirs(myMediaDirectory)
-                logger.debug('Created submission media directory: %s', myDirectory)
+                logger.debug(
+                    'Created submission media directory: %s', myDirectory)
             except OSError, e:
                 logger.error(
-                    'Error during submission media directory creation: %s (%s)',
+                    'Error creating submission media directory: %s (%s)',
                     myDirectory, str(e)
                 )
 
@@ -164,4 +233,5 @@ if __name__ == '__main__':
     # setup logging when running this module
     logging.basicConfig(level=logging.INFO)
     myODKAGGServer = ODKAggregateExport(
-        'http://suhozid.geof.unizg.hr/ODKAggregate/', 'Surveillance')
+        'http://suhozid.geof.unizg.hr/ODKAggregate/',
+        'SUHOZID-2013.03-fanatic')

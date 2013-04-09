@@ -1,12 +1,9 @@
 from urlparse import urljoin
-import xml.etree.ElementTree as ET
-# import lxml.etree as ET
+import lxml.etree as ET
 import requests
 import csv
 import os
 import itertools
-import cStringIO
-import codecs
 import logging
 logger = logging.getLogger(__name__)
 

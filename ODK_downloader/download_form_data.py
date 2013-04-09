@@ -174,8 +174,8 @@ class ODKAggregateExport(object):
             ])
             # process form media
             myMediaNodes = root.findall('.//{0}mediaFile'.format(myNamespace))
-            myFormMedia = [
-                {el.tag.split('}')[1]: el.text for el in elem}
+            myFormMedia = [dict(
+                ((el.tag.split('}')[1], el.text) for el in elem))
                 for elem in myMediaNodes
             ]
             self.submissions.append((myFormData, myFormMedia))

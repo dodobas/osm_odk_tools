@@ -96,7 +96,7 @@ class ODKAggregateExport(object):
 
                 logger.info('Server form list: %s', formList)
                 if self.showForms:
-                    print 'Server form list: {}'.format(formList)
+                    print 'Server form list: {0}'.format(formList)
 
                     # toggle formlist - inhibit further ODK processing
                     self.formlist = None

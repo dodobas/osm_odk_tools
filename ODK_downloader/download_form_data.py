@@ -4,6 +4,8 @@ import requests
 import csv
 import os
 import itertools
+import argparse
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -55,10 +57,14 @@ class ODKAggregateExport(object):
     """
     ODK Aggregate service exporter
     """
-    def __init__(self, theODKAggServer, theFormName, theStorageFolder='/tmp'):
+    def __init__(
+            self, theODKAggServer, theFormName, theStorageFolder='/tmp',
+            showForms=False):
+
         self.ODK_AGGSERVER = theODKAggServer
         self.formName = theFormName
         self.storageFolder = theStorageFolder
+        self.showForms = showForms
 
         self.submissions = []
 
@@ -67,14 +73,14 @@ class ODKAggregateExport(object):
         if self.formlist:
             self.get_form()
 
-        if self.formid:
-            self.get_form_submissions()
+            if self.formid:
+                self.get_form_submissions()
 
-        if self.submissionIDs:
-            self.get_submissions()
+            if self.submissionIDs:
+                self.get_submissions()
 
-        if len(self.submissions) != 0:
-            self.save_data()
+            if len(self.submissions) != 0:
+                self.save_data()
 
     def get_form_list(self):
         myURL = urljoin(self.ODK_AGGSERVER, 'formList')
@@ -85,8 +91,16 @@ class ODKAggregateExport(object):
 
             if root.tag == 'forms':
                 self.formlist = list(root)
-                logger.info('Server form list: %s', [
-                    form.text for form in self.formlist])
+
+                formList = [form.text for form in self.formlist]
+
+                logger.info('Server form list: %s', formList)
+                if self.showForms:
+                    print 'Server form list: {}'.format(formList)
+
+                    # toggle formlist - inhibit further ODK processing
+                    self.formlist = None
+
             else:
                 self.formlist = None
         else:
@@ -215,7 +229,8 @@ class ODKAggregateExport(object):
         for submission in (subm[1] for subm in self.submissions):
             for mediaFile in submission:
                 myMediaFilename = os.path.join(
-                    myMediaDirectory, mediaFile.get('filename'))
+                    myMediaDirectory, mediaFile.get('filename')
+                )
                 myMediaDownloadURL = mediaFile.get('downloadUrl')
                 r = requests.get(myMediaDownloadURL)
                 if r.status_code == 200:
@@ -229,6 +244,22 @@ class ODKAggregateExport(object):
 if __name__ == '__main__':
     # setup logging when running this module
     logging.basicConfig(level=logging.INFO)
-    myODKAGGServer = ODKAggregateExport(
-        'http://suhozid.geof.unizg.hr/ODKAggregate/',
-        'SUHOZID-2013.03-fanatic')
+
+    parser = argparse.ArgumentParser(
+        description='Download from ODK Aggregate server'
+    )
+    parser.add_argument(
+        'form', nargs='?', type=str,
+        help='name of ODK form, if omitted will show available forms'
+    )
+    parser.add_argument(
+        '--server', type=str, help='ODK Aggregate server',
+        default='http://suhozid.geof.unizg.hr/ODKAggregate/'
+    )
+
+    # parse args
+    args = parser.parse_args()
+    if args.form is not None:
+        ODKAggregateExport(args.server, args.form)
+    else:
+        ODKAggregateExport(args.server, None, showForms=True)
